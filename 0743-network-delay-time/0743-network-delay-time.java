@@ -27,12 +27,20 @@ class Solution {
             graph.putIfAbsent(times[i][0],new ArrayList<>());
             graph.get(times[i][0]).add(new Edge(times[i][1],times[i][2]));
         }
-        int min = dikjstra(graph,k,n);
-        
-        return min == Integer.MAX_VALUE || min ==0? -1 : min;
+        int[] d = dijkstra(graph, k, n);
+
+        int maxTime = 0;
+        for (int i = 1; i <= n; i++) {
+            if (d[i] == Integer.MAX_VALUE) {
+                return -1; // 도달할 수 없는 노드가 있으면 -1을 반환
+            }
+            maxTime = Math.max(maxTime, d[i]);
+        }
+
+        return maxTime;
     }
 
-    public int dikjstra(Map<Integer,List<Edge>> graph,int k,int n){
+    public int[] dijkstra(Map<Integer,List<Edge>> graph,int k,int n){
         int MAX=Integer.MAX_VALUE;
         int[] distances = new int[n+1];
         Arrays.fill(distances,MAX);//최솟값 구하기 위한 최댓값 초기화 셋팅
@@ -55,6 +63,6 @@ class Solution {
                 }
             }
         }
-        return distances[n];
+        return distances;
     }
 }
